@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts - Quick Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .contacts-container {
+            width: 400px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 24px 28px 18px 28px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            border: 1px solid #e3e3e3;
+        }
+        .contacts-container h2 {
+            text-align: center;
+            color: #0074d9;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+        .contacts-list {
+            margin-bottom: 18px;
+        }
+        .contact-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        .add-contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .add-contact-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .add-contact-form button {
+            align-self: flex-end;
+            width: 110px;
+            margin-top: 2px;
+            padding: 8px 18px;
+            background: #2ecc40;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        #app-bar {
+            background: #0074d9;
+            padding: 10px 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .nav-item {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-item:hover {
+            text-decoration: underline;
+        }
+        .nav-item.active {
+            text-decoration: underline;
+            font-weight: 700;
+        }
+        .add-contact-fields input[name="country_code"] {
+            width: 60px;
+            min-width: 40px;
+            max-width: 80px;
+            flex: 0 0 60px;
+            text-align: center;
+        }
+        .add-contact-fields input[name="friend_mobile"] {
+            width: 120px;
+            min-width: 80px;
+            max-width: 160px;
+            flex: 0 0 120px;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+        .country-code-input, .mobile-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .country-code-input {
+            max-width: 90px;
+            flex: 0 0 90px;
+        }
+        .mobile-input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+{% extends 'base.html' %}
+{% block title %}Quick Chat - Contacts{% endblock %}
+{% block content %}
+<div class="contacts-container">
+    <h2>Your Contacts</h2>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form class="add-contact-form" method="post">
+        <div class="add-contact-fields">
+            <input type="text" name="friend_name" placeholder="Friend's Name" required>
+            <div class="input-row">
+                <div style="flex:0 0 90px;">
+                    <input type="text" id="country_code" name="country_code" class="country-code-input" placeholder="e.g. 91" required>
+                </div>
+                <div style="flex:1 1 auto;">
+                    <input type="text" id="friend_mobile" name="friend_mobile" class="mobile-input" placeholder="e.g. 9876543210" required>
+                </div>
+            </div>
+        </div>
+        <button type="submit">Add Contact</button>
+    </form>
+    <div class="contacts-list">
+        {% for c in contacts %}
+            <div class="contact-item">
+                <span class="contact-name">{{ c['friend_name'] }}
+                    {% if c['friend_username'] %}
+                        <span title="Registered user" style="color:#2ecc40;margin-left:6px;"><i class="fa-solid fa-circle-check"></i></span>
+                    {% endif %}
+                </span>
+                <span class="contact-mobile">{{ c['friend_mobile'] }}</span>
+            </div>
+        {% else %}
+            <div>No contacts yet.</div>
+        {% endfor %}
+    </div>
+    <a href="/">Back to Chat</a>
+</div>
+{% endblock %}
+</body>
+</html>
